@@ -1,4 +1,7 @@
 # Go-Walle
+[![Release Version](https://api.bintray.com/packages/meituan/maven/com.meituan.android.walle:library/images/download.svg)](https://github.com/xuanwolei/gowalle/releases)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/xuanwolei/gowalle/pulls)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://raw.githubusercontent.com/xuanwolei/gowalle/master/LICENSE)
 
 Go-Walle（瓦力）：Android Signature V2 Scheme签名下的渠道/自定义数据写入
 
