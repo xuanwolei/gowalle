@@ -22,13 +22,14 @@ go get -u github.com/xuanwolei/gowalle
 #### 读取数据
 ```
 	filePath := "./test.apk"
-	data, err := GetBlockByte(filePath)
+	data, err := gowalle.GetBlockByte(filePath)
 	if err != nil {
 		return
 	}
 	fmt.Printf("block string:%s", string(data))
 }
 ```
+> 数据写入格式和Walle兼容，walle java代码也可读取
 
 ## 参考
 * [Walle](https://github.com/Meituan-Dianping/walle)
