@@ -14,20 +14,18 @@ go get -u github.com/xuanwolei/gowalle
 
 #### 写入数据
 ```
-	filePath := "./test.apk"
-	err := gowalle.WriteBlockByte(filePath, []byte("this is custom information 1 2 3 4 5!"))
-
+filePath := "./test.apk"
+err := gowalle.WriteBlockByte(filePath, []byte("this is custom information 1 2 3 4 5!"))
 ```
 
 #### 读取数据
 ```
-	filePath := "./test.apk"
-	data, err := gowalle.GetBlockByte(filePath)
-	if err != nil {
-		return
-	}
-	fmt.Printf("block string:%s", string(data))
+filePath := "./test.apk"
+data, err := gowalle.GetBlockByte(filePath)
+if err != nil {
+    return
 }
+fmt.Printf("block string:%s", string(data))
 ```
 > 数据写入格式和Walle兼容，walle java代码也可读取
 
