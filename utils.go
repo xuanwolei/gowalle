@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -184,14 +185,24 @@ func genApkSigningBlock(idValues map[int][]byte, originIdValues map[int][]byte) 
 	}
 
 	apkSigningBlock := &ApkSigningBlock{}
-
+	var ids []int
 	for id, value := range originIdValues {
+		ids = append(ids, id)
 		payload := &ApkSigningPayload{
 			id:    id,
 			value: value,
 		}
 		apkSigningBlock.AddPayload(payload)
 	}
+	//按照id降序排列
+	//sort.Sort(sort.Reverse(sort.IntSlice(ids)))
+	//for _, id := range ids {
+	//	payload := &ApkSigningPayload{
+	//		id:    id,
+	//		value: originIdValues[id],
+	//	}
+	//	apkSigningBlock.AddPayload(payload)
+	//}
 
 	return apkSigningBlock
 }
@@ -212,6 +223,8 @@ func updateApkSigning(fIn *os.File, centralDirStartOffset int64, apkSigBlockOffs
 
 	// 更新签名块
 	fIn.Seek(apkSigBlockOffset, os.SEEK_SET)
+	fIn.Truncate(apkSigBlockOffset)
+
 	// 写入新的签名块，返回的长度是不包含签名块头部的 Size of block（8字节）
 	lengthExcludeHSOB, err := apkSigningBlock.WriteApkSigningBlock(fIn)
 	if err != nil {
@@ -236,6 +249,38 @@ func updateApkSigning(fIn *os.File, centralDirStartOffset int64, apkSigBlockOffs
 	extraLength := newSignBlockLength - oldSignBlockLength
 	binary.LittleEndian.PutUint32(temp, uint32(int32(centralDirStartOffset+extraLength)))
 	fIn.Write(temp)
+
+	return nil
+}
+
+func CopyFile(sourceFile, destinationFile string, sync bool) error {
+	// 打开源文件
+	source, err := os.Open(sourceFile)
+	if err != nil {
+		return err
+	}
+	defer source.Close()
+
+	// 创建目标文件
+	destination, err := os.Create(destinationFile)
+	if err != nil {
+		return err
+	}
+	defer destination.Close()
+
+	// 复制文件内容
+	_, err = io.Copy(destination, source)
+	if err != nil {
+		return err
+	}
+
+	// 可选：如果你想确保数据被写入磁盘，可以使用Sync方法
+	if sync {
+		err = destination.Sync()
+		if err != nil {
+			return err
+		}
+	}
 
 	return nil
 }

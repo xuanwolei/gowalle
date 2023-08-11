@@ -1,2 +1,6 @@
 /.idea
 logs
+*.apk
+*.bak
+channel.jar
+/libs

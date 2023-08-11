@@ -25,7 +25,7 @@ func (block *ApkSigningBlock) WriteApkSigningBlock(dataOutput *os.File) (int64, 
 	for _, payload := range block.payloads {
 		length += 12 + int64(len(payload.value)) // 12 = 8(uint64-length-prefixed) + 4 (ID (uint32))
 	}
-
+	
 	// 写入block总长度
 	if err := binary.Write(dataOutput, binary.LittleEndian, length); err != nil {
 		return 0, err
